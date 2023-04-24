@@ -87,7 +87,28 @@ function save(req, res) {
 
 // Show a single comment
 function show(req, res) {
-    //
+    // Récupérer l'identifiant du commentaire
+    const commentId = req.params.id;
+
+    // Vérifier l'existence de l'identifiant
+    models.Comment.findByPk(commentId)
+        .then((result) => {
+            if (result !== null) {
+                res.status(200).json({
+                    comment: result,
+                });
+            } else {
+                res.status(400).json({
+                    message: "Comment not found!",
+                });
+            }
+        })
+        .catch((error) => {
+            res.status(500).json({
+                message: "Something went wrong!",
+                error: error.message,
+            });
+        });
 }
 
 // Update a comment
